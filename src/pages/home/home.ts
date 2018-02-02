@@ -26,7 +26,7 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
-    this.todoList = this.todoProvider.getAll();
+    this.filterTodo();
   }
 
   ionViewWillEnter() {
@@ -41,7 +41,11 @@ export class HomePage {
     } else if (selectedItem == 'Terminées') {
       this.todoList = this.todoProvider.getDone();
     } else {
-      this.todoList = this.todoProvider.getAll();
+      this.todoProvider.getAll().then(
+        (data) => {
+          this.todoList = data;
+        }
+      );
     }
   }
 
@@ -86,6 +90,9 @@ export class HomePage {
 
   changeDone(todo) {
     todo.done = !todo.done;
-    this.filterTodo();
+    this.todoProvider.edit(todo);
+    if (this.selectedFilter != "Toutes") {
+      this.filterTodo();
+    }
   }
 }

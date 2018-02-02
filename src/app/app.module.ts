@@ -1,3 +1,4 @@
+import { IonicStorageModule } from '@ionic/storage';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
@@ -9,6 +10,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { TodoProvider } from '../providers/todo/todo';
 
+
 @NgModule({
   declarations: [
     MyApp,
@@ -17,7 +19,8 @@ import { TodoProvider } from '../providers/todo/todo';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -28,8 +31,8 @@ import { TodoProvider } from '../providers/todo/todo';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
-    TodoProvider
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    TodoProvider,
   ]
 })
-export class AppModule {}
+export class AppModule { }

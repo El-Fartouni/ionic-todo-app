@@ -1,3 +1,4 @@
+import { Storage } from '@ionic/storage';
 import { Injectable } from '@angular/core';
 
 /*
@@ -10,16 +11,24 @@ import { Injectable } from '@angular/core';
 
 export class TodoProvider {
 
-  private todoList = [
-    { task: 'Nourrir mon poisson combattant', done: true },
-    { task: 'Le 16 Février, allez voir black panter', done: false },
-    { task: 'Donner des cours de maths', done: false },
+  private todoList = [];
 
+  constructor(public storage: Storage) {
 
-  ];
+  }
+
+  private persist() {
+    this.storage.set("todoList", JSON.stringify(this.todoList));
+  }
 
   public getAll() {
-    return this.todoList;
+    return new Promise(
+      (resolve, reject) => {
+      this.storage.get("todoList").then((data) => {
+        this.todoList = JSON.parse(data)|| [];
+        resolve (this.todoList);
+      });
+    });
   }
 
   public getDone() {
@@ -32,13 +41,16 @@ export class TodoProvider {
 
   public delete(pos) {
     this.todoList.splice(pos, 1);
+    this.persist();
   }
 
   add(todo) {
     this.todoList.push(todo);
+    this.persist();
   }
 
   edit(todo) {
     //rien à faire pour l'instant
+    this.persist();
   }
 }
